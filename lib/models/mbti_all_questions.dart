@@ -692,8 +692,8 @@ List<Question> allQuestions = [
     text: 'Do you : ',
     options: [
       Option(
-        dominationKey: 'speak easily and at length with strangers',
-        text: 'E',
+        dominationKey: 'E',
+        text: 'speak easily and at length with strangers',
       ),
       Option(
         dominationKey: 'I',

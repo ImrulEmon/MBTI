@@ -714,8 +714,8 @@ class _BrainDominanceGameViewState
       text: 'Do you : ',
       options: [
         Option(
-          dominationKey: 'speak easily and at length with strangers',
-          text: 'E',
+          dominationKey: 'E',
+          text: 'speak easily and at length with strangers',
         ),
         Option(
           dominationKey: 'I',
@@ -1010,7 +1010,7 @@ class _BrainDominanceGameViewState
     randomQuestions = allQuestions.toList();
 
     randomQuestions.shuffle();
-    questions = randomQuestions.take(10).toList();
+    questions = randomQuestions.toList();
 
     pageController;
     super.initState();
@@ -1234,14 +1234,14 @@ class _BrainDominanceGameViewState
                                     .selectedOption !=
                                 null &&
                             ref.watch(counterProvider) > questions.length - 1) {
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => BrainDominanceResultView(
-                          //       questionWithResult: questions,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MbtiResultView(
+                                questionWithResult: questions,
+                              ),
+                            ),
+                          );
                           ref.read(counterProvider.notifier).state = 1;
                         } else {
                           null;

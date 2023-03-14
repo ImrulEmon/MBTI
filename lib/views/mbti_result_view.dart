@@ -20,6 +20,8 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
   bool isLoading = true;
   var calculationTime = Random();
   List<Question> questionWithResult = [];
+  List<String> personalityType = ['', '', '', ''];
+  late String personalityResult;
   @override
   void initState() {
     super.initState();
@@ -32,22 +34,50 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
   }
 
   String result() {
-    int leftDominance = 0;
-    int rightDominance = 0;
+    int E = 0, I = 0, S = 0, N = 0, T = 0, F = 0, J = 0, P = 0;
+    personalityType;
     for (var question in questionWithResult) {
-      if (question.selectedOption!.dominationKey == 'A') {
-        leftDominance++;
+      if (question.selectedOption!.dominationKey == 'E') {
+        E++;
+      } else if (question.selectedOption!.dominationKey == 'I') {
+        I++;
+      } else if (question.selectedOption!.dominationKey == 'S') {
+        S++;
+      } else if (question.selectedOption!.dominationKey == 'N') {
+        N++;
+      } else if (question.selectedOption!.dominationKey == 'T') {
+        T++;
+      } else if (question.selectedOption!.dominationKey == 'F') {
+        F++;
+      } else if (question.selectedOption!.dominationKey == 'J') {
+        J++;
       } else {
-        rightDominance++;
+        P++;
       }
     }
-    if (leftDominance > rightDominance) {
-      return 'leftDominance';
-    } else if (leftDominance < rightDominance) {
-      return 'rightDominance';
-    } else {
-      return 'equal';
+    if (I >= E) {
+      personalityType[0] = 'I';
+    } else if (E > I) {
+      personalityType[0] = 'E';
     }
+    if (N >= S) {
+      personalityType[1] = 'N';
+    } else if (S > N) {
+      personalityType[1] = 'S';
+    }
+    if (T >= F) {
+      personalityType[2] = 'T';
+    } else if (F > T) {
+      personalityType[2] = 'F';
+    }
+    if (P >= J) {
+      personalityType[3] = 'P';
+    } else if (J > P) {
+      personalityType[3] = 'J';
+    }
+    personalityResult = personalityType.join();
+    print(personalityResult);
+    return personalityResult;
   }
 
   @override
@@ -107,7 +137,10 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
                                     ),
                                   ],
                                 )
-                              : const Text('Result')
+                              : Text(
+                                  '${result()}',
+                                  style: TextStyle(color: Colors.white),
+                                )
                         ],
                       ),
                     ),
