@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mbti_test/constants/mbti_constants.dart';
+import 'package:mbti_test/models/personalillty_model.dart';
 import 'package:mbti_test/models/question_option_model.dart';
 import 'package:mbti_test/providers/mbti_counter_provider.dart';
 import 'package:mbti_test/views/mbti_game_view.dart';
@@ -20,12 +21,195 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
   bool isLoading = true;
   var calculationTime = Random();
   List<Question> questionWithResult = [];
+
   List<String> personalityType = ['', '', '', ''];
   late String personalityResult;
+  var resultPersonality;
+
+  // List<Personality> allPersonalities = [
+  //   Personality(
+  //     id: 1,
+  //     title: 'ISTJ',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 2,
+  //     title: 'ISTP',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 3,
+  //     title: 'ESTP',
+  //     subtitle: 'Logical Responders',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 4,
+  //     title: 'ESTJ',
+  //     subtitle: 'Practical Expeditors',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 5,
+  //     title: 'ISFJ',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 6,
+  //     title: 'ISFP',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 7,
+  //     title: 'ESFP',
+  //     subtitle: 'Compassionate Responders',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 8,
+  //     title: 'ESFJ',
+  //     subtitle: 'Practical Contributors',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 9,
+  //     title: 'INFJ',
+  //     subtitle: 'Compassionate Visionaries',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 10,
+  //     title: 'INFP',
+  //     subtitle: 'Insightful Enhanchcers',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 11,
+  //     title: 'ENFP',
+  //     subtitle: 'Compassioate Explorers',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 12,
+  //     title: 'ENFJ',
+  //     subtitle: 'Insightful Contributors',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 13,
+  //     title: 'INTJ',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 14,
+  //     title: 'INTP',
+  //     subtitle: '',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 15,
+  //     title: 'ENTP',
+  //     subtitle: 'Logical Explorers',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  //   Personality(
+  //     id: 16,
+  //     title: 'ENTJ',
+  //     subtitle: 'Insightful Expeditors',
+  //     logo: '',
+  //     focus: '',
+  //     discription: '',
+  //     fameType: '',
+  //     careers: [],
+  //     celbrities: [],
+  //   ),
+  // ];
+
   @override
   void initState() {
     super.initState();
     questionWithResult = widget.questionWithResult;
+
     Future.delayed(Duration(seconds: calculationTime.nextInt(5) + 1), () {
       setState(() {
         isLoading = false;
@@ -33,9 +217,10 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
     });
   }
 
-  String result() {
+  Personality result(allPersonalities) {
     int E = 0, I = 0, S = 0, N = 0, T = 0, F = 0, J = 0, P = 0;
     personalityType;
+    resultPersonality;
     for (var question in questionWithResult) {
       if (question.selectedOption!.dominationKey == 'E') {
         E++;
@@ -55,35 +240,30 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
         P++;
       }
     }
-    if (I >= E) {
-      personalityType[0] = 'I';
-    } else if (E > I) {
-      personalityType[0] = 'E';
-    }
-    if (N >= S) {
-      personalityType[1] = 'N';
-    } else if (S > N) {
-      personalityType[1] = 'S';
-    }
-    if (T >= F) {
-      personalityType[2] = 'T';
-    } else if (F > T) {
-      personalityType[2] = 'F';
-    }
-    if (P >= J) {
-      personalityType[3] = 'P';
-    } else if (J > P) {
-      personalityType[3] = 'J';
-    }
+
+    personalityType[0] = E > I ? 'E' : 'I';
+    personalityType[1] = S > N ? 'S' : 'N';
+    personalityType[2] = F > T ? 'F' : 'T';
+    personalityType[3] = J > P ? 'J' : 'P';
+
     personalityResult = personalityType.join();
-    print(personalityResult);
-    return personalityResult;
+
+    for (Personality personlity in allPersonalities) {
+      if (personalityResult == personlity.title) {
+        // print(personlity.id);
+        // print(personlity.subtitle);
+        resultPersonality = personlity;
+      }
+    }
+
+    return resultPersonality;
   }
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var finalResult = result(allPersonalities);
     return Scaffold(
       backgroundColor: mbtiBgc,
       body: SafeArea(
@@ -97,7 +277,7 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
                     SizedBox(
                       width: 300,
                       child: Image.asset(
-                        mbtiLogo,
+                        isLoading ? mbtiLogo : finalResult.logo,
                         height: 150,
                         width: 150,
                         fit: BoxFit.contain,
@@ -137,9 +317,45 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
                                     ),
                                   ],
                                 )
-                              : Text(
-                                  '${result()}',
-                                  style: TextStyle(color: Colors.white),
+                              : Padding(
+                                  padding: EdgeInsets.all(width * .05),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        '''${finalResult.title}-${finalResult.subtitle}-${finalResult.focus}-${finalResult.fameType}
+                                        ''',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      Container(
+                                        height: height * .08,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              finalResult.celebrities.length,
+                                          itemBuilder: (context, index) {
+                                            return Center(
+                                              child: Card(
+                                                color: mbtiSecondary,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    finalResult
+                                                        .celebrities[index],
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 )
                         ],
                       ),

@@ -1003,6 +1003,20 @@ class _BrainDominanceGameViewState
         ),
       ],
     ),
+    Question(
+      id: 71,
+      text: 'Are you:',
+      options: [
+        Option(
+          dominationKey: 'T',
+          text: 'Male',
+        ),
+        Option(
+          dominationKey: 'F',
+          text: 'Female',
+        ),
+      ],
+    ),
   ];
 
   @override
@@ -1010,7 +1024,7 @@ class _BrainDominanceGameViewState
     randomQuestions = allQuestions.toList();
 
     randomQuestions.shuffle();
-    questions = randomQuestions.toList();
+    questions = randomQuestions.take(10).toList();
 
     pageController;
     super.initState();
