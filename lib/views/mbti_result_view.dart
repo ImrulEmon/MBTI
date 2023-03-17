@@ -1,13 +1,16 @@
 import 'dart:math';
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:mbti_test/constants/mbti_constants.dart';
 import 'package:mbti_test/models/personalillty_model.dart';
 import 'package:mbti_test/models/question_option_model.dart';
 import 'package:mbti_test/providers/mbti_counter_provider.dart';
 import 'package:mbti_test/views/mbti_game_view.dart';
 import 'package:mbti_test/widgets/info_card_widget.dart';
+import 'package:mbti_test/widgets/mbti_swipeable_card_widget.dart';
 
 class MbtiResultView extends StatefulWidget {
   final List<Question> questionWithResult;
@@ -264,146 +267,179 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var finalResult = result(allPersonalities);
-    return Scaffold(
-      backgroundColor: mbtiBgc,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      child: Image.asset(
-                        isLoading ? mbtiLogo : finalResult.logo,
-                        height: 150,
-                        width: 150,
-                        fit: BoxFit.contain,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: mbtiBgc,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 300,
+                        child: Image.asset(
+                          isLoading ? mbtiLogo : finalResult.logo,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                    ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          isLoading
-                              ? Column(
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsets.only(top: height * .25),
-                                      height: 100,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: mbtiSecondary,
-                                        borderRadius: BorderRadius.circular(24),
-                                      ),
-                                      child: const CircularProgressIndicator
-                                          .adaptive(
-                                        backgroundColor: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: height * .04,
-                                    ),
-                                    const Text(
-                                      'Calculating...',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.all(width * .05),
-                                  child: Column(
+                      const SizedBox(height: 12),
+                      if (!isLoading)
+                        Text(
+                          finalResult.title,
+                          style: const TextStyle(
+                              fontSize: 24, color: Colors.white),
+                        ),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            isLoading
+                                ? Column(
                                     children: [
-                                      Text(
-                                        '''${finalResult.title}-${finalResult.subtitle}-${finalResult.focus}-${finalResult.fameType}
-                                        ''',
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      ),
                                       Container(
-                                        height: height * .08,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          itemCount:
-                                              finalResult.celebrities.length,
-                                          itemBuilder: (context, index) {
-                                            return Center(
-                                              child: Card(
-                                                color: mbtiSecondary,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    finalResult
-                                                        .celebrities[index],
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                        margin:
+                                            EdgeInsets.only(top: height * .25),
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: mbtiSecondary,
+                                          borderRadius:
+                                              BorderRadius.circular(24),
                                         ),
-                                      )
+                                        child: const CircularProgressIndicator
+                                            .adaptive(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: height * .04,
+                                      ),
+                                      const Text(
+                                        'Calculating',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ],
+                                  )
+                                : Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 12),
+                                    height: height * .5,
+                                    width: width * .8,
+                                    child: Swiper(
+                                      itemWidth: 300,
+                                      itemCount: 5,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return SwipeableCardWidget(
+                                          index: index,
+                                          content: finalResult,
+                                        );
+                                      },
+                                      viewportFraction: 0.5,
+                                      scale: 0.9,
+                                      layout: SwiperLayout.STACK,
+                                    ),
                                   ),
-                                )
-                        ],
+                            // : Padding(
+                            //     padding: EdgeInsets.all(width * .05),
+                            //     child:
+
+                            //     Column(
+                            //       children: [
+                            //         Text(
+                            //           '''${finalResult.title}-${finalResult.subtitle}-${finalResult.focus}-${finalResult.fameType}
+                            //           ''',
+                            //           style: const TextStyle(
+                            //               color: Colors.white),
+                            //         ),
+                            //         Container(
+                            //           height: height * .08,
+                            //           child: ListView.builder(
+                            //             scrollDirection: Axis.horizontal,
+                            //             shrinkWrap: true,
+                            //             itemCount:
+                            //                 finalResult.celebrities.length,
+                            //             itemBuilder: (context, index) {
+                            //               return Center(
+                            //                 child: Card(
+                            //                   color: mbtiSecondary,
+                            //                   child: Padding(
+                            //                     padding:
+                            //                         const EdgeInsets.all(8.0),
+                            //                     child: Text(
+                            //                       finalResult
+                            //                           .celebrities[index],
+                            //                       style: const TextStyle(
+                            //                           color: Colors.white),
+                            //                       textAlign: TextAlign.center,
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               );
+                            //             },
+                            //           ),
+                            //         )
+                            //       ],
+                            //     ),
+                            //   )
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height * .1,
-                    )
-                  ],
+                      SizedBox(
+                        height: height * .1,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (!isLoading)
-              Positioned(
-                bottom: height * .01,
-                left: width * .1,
-                right: width * .1,
-                child: Consumer(
-                  builder: (context, ref, child) => ElevatedButton(
-                    onPressed: () {
-                      if (!isLoading) {
-                        ref.invalidate(counterProvider);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const MbtiPersonalityGameView()),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 24,
-                        horizontal: 48,
+              if (!isLoading)
+                Positioned(
+                  bottom: height * .01,
+                  left: width * .1,
+                  right: width * .1,
+                  child: Consumer(
+                    builder: (context, ref, child) => ElevatedButton(
+                      onPressed: () {
+                        if (!isLoading) {
+                          ref.invalidate(counterProvider);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const MbtiPersonalityGameView()),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 24,
+                          horizontal: 48,
+                        ),
+                        shape: const StadiumBorder(),
                       ),
-                      shape: const StadiumBorder(),
-                    ),
-                    child: const Text(
-                      'New Test',
-                      style: TextStyle(
-                        fontSize: 24,
+                      child: const Text(
+                        'New Test',
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
