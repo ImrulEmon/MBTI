@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mbti_test/constants/mbti_constants.dart';
-import 'package:mbti_test/models/mbti_all_questions.dart';
+
 import 'package:mbti_test/models/question_option_model.dart';
 import 'package:mbti_test/providers/mbti_counter_provider.dart';
 import 'package:mbti_test/views/mbti_info_view.dart';
@@ -1024,7 +1024,7 @@ class _BrainDominanceGameViewState
     randomQuestions = allQuestions.toList();
 
     randomQuestions.shuffle();
-    questions = randomQuestions.take(10).toList();
+    questions = randomQuestions.take(4).toList();
 
     pageController;
     super.initState();

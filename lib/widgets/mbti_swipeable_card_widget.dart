@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:mbti_test/constants/mbti_constants.dart';
 import 'package:mbti_test/models/personalillty_model.dart';
 
@@ -15,9 +11,10 @@ class SwipeableCardWidget extends StatelessWidget {
   personalityIndexing(index, content) {
     if (index == 0) {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: mbtiSecondary,
-          borderRadius: BorderRadius.all(
+          border: Border.all(color: Colors.white10),
+          borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),
@@ -27,9 +24,10 @@ class SwipeableCardWidget extends StatelessWidget {
       );
     } else if (index == 1) {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: mbtiSecondary,
-          borderRadius: BorderRadius.all(
+          border: Border.all(color: Colors.white10),
+          borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),
@@ -47,7 +45,7 @@ class SwipeableCardWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 24,
               ),
               Text(
                 content.subtitle,
@@ -57,7 +55,7 @@ class SwipeableCardWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 48,
               ),
               Text(
                 content.focus,
@@ -72,9 +70,10 @@ class SwipeableCardWidget extends StatelessWidget {
       );
     } else if (index == 2) {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: mbtiSecondary,
-          borderRadius: BorderRadius.all(
+          border: Border.all(color: Colors.white10),
+          borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),
@@ -88,9 +87,10 @@ class SwipeableCardWidget extends StatelessWidget {
       );
     } else if (index == 3) {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: mbtiSecondary,
-          borderRadius: BorderRadius.all(
+          border: Border.all(color: Colors.white10),
+          borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),
@@ -100,9 +100,19 @@ class SwipeableCardWidget extends StatelessWidget {
             children: [
               Text(
                 content.fameType,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
-              Container(
+              const SizedBox(
+                height: 24,
+              ),
+              const Text(
+                'Preferred Careerpath',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              SizedBox(
                 height: 300,
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -132,9 +142,10 @@ class SwipeableCardWidget extends StatelessWidget {
       // [content.fameType, content.celebrities];
     } else {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: mbtiSecondary,
-          borderRadius: BorderRadius.all(
+          border: Border.all(color: Colors.white10),
+          borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
         ),

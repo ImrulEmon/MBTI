@@ -9,7 +9,8 @@ import 'package:mbti_test/models/personalillty_model.dart';
 import 'package:mbti_test/models/question_option_model.dart';
 import 'package:mbti_test/providers/mbti_counter_provider.dart';
 import 'package:mbti_test/views/mbti_game_view.dart';
-import 'package:mbti_test/widgets/info_card_widget.dart';
+import 'package:mbti_test/views/mbti_info_view.dart';
+
 import 'package:mbti_test/widgets/mbti_swipeable_card_widget.dart';
 
 class MbtiResultView extends StatefulWidget {
@@ -270,6 +271,27 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: mbtiBgc,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          title: const Text('Personality Test'),
+          centerTitle: false,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  if (!isLoading) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MbtiInfoView(),
+                      ),
+                    );
+                  }
+                },
+                icon: const Icon(Icons.exit_to_app_sharp))
+          ],
+        ),
         backgroundColor: mbtiBgc,
         body: SafeArea(
           child: Stack(
@@ -333,8 +355,8 @@ class _BrainDominanceResultViewState extends State<MbtiResultView> {
                                 : Container(
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 12),
-                                    height: height * .5,
-                                    width: width * .8,
+                                    height: 300,
+                                    // width: width * .8,
                                     child: Swiper(
                                       itemWidth: 300,
                                       itemCount: 5,
